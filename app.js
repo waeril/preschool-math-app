@@ -45,9 +45,18 @@ function updateUserDropdowns() {
 
 // Navigation
 function switchScreen(screenId) {
-    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-    document.getElementById(screenId).classList.add('active');
+    // 1. Hide all screens and ensure they have the 'hidden' class
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+    
+    // 2. Show the requested screen and remove the 'hidden' class
+    const targetScreen = document.getElementById(screenId);
+    targetScreen.classList.add('active');
+    targetScreen.classList.remove('hidden');
 }
+
 function goHome() { switchScreen('screen-home'); }
 
 // Game Logic
@@ -83,30 +92,36 @@ function generateQuestions(mode) {
         let q = {}, a, b;
         switch(mode) {
             case 'guess':
-                q.answer = Math.floor(Math.random() * 10) + 1; // 1-10
+                q.answer = Math.floor(Math.random() * 10) + 1; // 1 to 10
                 q.display = EMOJIS[Math.floor(Math.random() * EMOJIS.length)].repeat(q.answer);
                 break;
             case 'add':
-                a = Math.floor(Math.random() * 6); // Keep sums <= 10
-                b = Math.floor(Math.random() * (11 - a));
+                // 'a' is 1 to 9. 'b' is 1 up to whatever is left to reach max 10.
+                a = Math.floor(Math.random() * 9) + 1; 
+                b = Math.floor(Math.random() * (10 - a)) + 1; 
                 q.display = `${a} + ${b} = ?`; q.answer = a + b;
                 break;
             case 'sub':
-                a = Math.floor(Math.random() * 11);
-                b = Math.floor(Math.random() * (a + 1));
+                // 'a' is 1 to 10. 'b' is 1 up to 'a' (no subtracting 0).
+                a = Math.floor(Math.random() * 10) + 1; 
+                b = Math.floor(Math.random() * a) + 1; 
                 q.display = `${a} - ${b} = ?`; q.answer = a - b;
                 break;
             case 'mix':
+                // Mixes the new Add and Sub logic randomly
                 if (Math.random() > 0.5) {
-                    a = Math.floor(Math.random() * 6); b = Math.floor(Math.random() * (11 - a));
+                    a = Math.floor(Math.random() * 9) + 1; 
+                    b = Math.floor(Math.random() * (10 - a)) + 1;
                     q.display = `${a} + ${b} = ?`; q.answer = a + b;
                 } else {
-                    a = Math.floor(Math.random() * 11); b = Math.floor(Math.random() * (a + 1));
+                    a = Math.floor(Math.random() * 10) + 1; 
+                    b = Math.floor(Math.random() * a) + 1;
                     q.display = `${a} - ${b} = ?`; q.answer = a - b;
                 }
                 break;
             case 'spell':
-                q.answer = Math.floor(Math.random() * 11); // 0-10
+                // We keep 0 here because learning to spell "zero" is useful!
+                q.answer = Math.floor(Math.random() * 11); // 0 to 10
                 q.display = q.answer.toString();
                 q.strAnswer = NUMBER_WORDS[q.answer];
                 break;
@@ -319,3 +334,23 @@ function getStats(user, mode) {
 
     return { attempts: filtered.length, avgPct, avgTime };
 }
+// --- Keyboard Support ---
+document.addEventListener('keydown', (event) => {
+    // 1. Only listen to the keyboard if the Game Screen is actually open
+    if (!document.getElementById('screen-game').classList.contains('active')) return;
+
+    // 2. If they press Enter, submit the answer!
+    if (event.key === 'Enter') {
+        // Prevents default behavior (like form submissions reloading the page)
+        event.preventDefault(); 
+        submitAnswer();
+    } 
+    // 3. If they press Backspace, clear the keypad numbers
+    else if (event.key === 'Backspace' && session.mode !== 'spell') {
+        clearNum();
+    } 
+    // 4. If they type a number on the keyboard, push it to the custom keypad
+    else if (/^[0-9]$/.test(event.key) && session.mode !== 'spell') {
+        appendNum(parseInt(event.key));
+    }
+});
