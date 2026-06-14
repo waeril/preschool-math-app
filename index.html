@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Preschool Math Fun</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
+        
+        <div id="screen-home" class="screen active">
+            <h1>🌟 Math Magic 🌟</h1>
+            
+            <div class="profile-section">
+                <select id="user-select">
+                    <option value="">-- Select Profile --</option>
+                </select>
+                <div class="new-user">
+                    <input type="text" id="new-username" placeholder="New user name">
+                    <button onclick="createUser()">Add</button>
+                </div>
+            </div>
+
+            <div class="modes-grid">
+                <button onclick="startGame('guess')" class="btn-mode mode-a">1️⃣ Guess the Emojis</button>
+                <button onclick="startGame('add')" class="btn-mode mode-b">➕ Addition</button>
+                <button onclick="startGame('sub')" class="btn-mode mode-c">➖ Subtraction</button>
+                <button onclick="startGame('mix')" class="btn-mode mode-d">🔀 Mix (+ and -)</button>
+                <button onclick="startGame('spell')" class="btn-mode mode-e">🔤 Spell Numbers</button>
+            </div>
+            
+            <button onclick="showAnalysis()" class="btn-analysis">📊 Analysis</button>
+        </div>
+
+        <div id="screen-game" class="screen hidden">
+            <div class="game-header">
+                <button onclick="quitGame()" class="btn-quit">✖</button>
+                <h2 id="mode-title">Mode</h2>
+                <div id="timer-display"></div>
+            </div>
+
+            <div id="question-container">
+                <div id="emoji-display" class="hidden"></div>
+                <div id="math-display" class="hidden"></div>
+            </div>
+
+            <div id="input-section">
+                <div id="custom-keypad" class="hidden">
+                    <button onclick="appendNum(1)">1</button>
+                    <button onclick="appendNum(2)">2</button>
+                    <button onclick="appendNum(3)">3</button>
+                    <button onclick="appendNum(4)">4</button>
+                    <button onclick="appendNum(5)">5</button>
+                    <button onclick="appendNum(6)">6</button>
+                    <button onclick="appendNum(7)">7</button>
+                    <button onclick="appendNum(8)">8</button>
+                    <button onclick="appendNum(9)">9</button>
+                    <button onclick="appendNum(0)">0</button>
+                    <button onclick="clearNum()" class="btn-clear">C</button>
+                </div>
+                <input type="text" id="spell-input" class="hidden" placeholder="Type here..." autocomplete="off">
+            </div>
+
+            <div id="answer-display"></div>
+            <button id="btn-submit" onclick="submitAnswer()" class="hidden">Submit</button>
+            <div id="feedback-message"></div>
+        </div>
+
+        <div id="screen-results" class="screen hidden">
+            <h2>🎉 Session Complete! 🎉</h2>
+            <div class="results-card">
+                <p>Grade: <strong id="res-grade"></strong></p>
+                <p>Score: <span id="res-score"></span>/10 (<span id="res-percent"></span>%)</p>
+                <p>Total Time: <span id="res-total-time"></span>s</p>
+                <p>Avg Time per Correct Answer: <span id="res-avg-time"></span>s</p>
+            </div>
+            <button onclick="goHome()" class="btn-primary">Back to Menu</button>
+        </div>
+
+        <div id="screen-analysis" class="screen hidden">
+            <h2>Data Analysis</h2>
+            <div class="compare-section">
+                <select id="compare-user-select" onchange="renderAnalysis()">
+                    <option value="">-- Compare with... (Optional) --</option>
+                </select>
+            </div>
+            <div class="table-container">
+                <table id="analysis-table">
+                    </table>
+            </div>
+            <button onclick="goHome()" class="btn-primary">Back to Menu</button>
+        </div>
+
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
