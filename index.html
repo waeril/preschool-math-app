@@ -97,7 +97,27 @@
             </div>
             <button onclick="goHome()" class="btn-primary">Back to Menu</button>
         </div>
+        
+        <div id="screen-analysis" class="screen hidden">
+            <h2>Data Analysis</h2>
+            <div id="rotate-message">
+                📱🔄 <br><br> Please tilt your phone sideways to view the data table!
+            </div>
+        
+            <div class="compare-section data-content">
+                <select id="compare-user-select" onchange="renderAnalysis()">
+                    <option value="">-- Compare with... (Optional) --</option>
+                </select>
+            </div>
+            
+            <div class="table-container data-content">
+                <table id="analysis-table">
+                    </table>
+            </div>
+            <button onclick="goHome()" class="btn-primary">Back to Menu</button>
+        </div>
 
+        
     </div>
     <script src="app.js"></script>
 </body>
