@@ -21,8 +21,10 @@ body {
 
 #app-container {
     width: 100%; max-width: 600px; 
-    height: 100%; /* Locks to the body height */
-    background: white; padding: 15px; 
+    height: 100%; 
+    background: white; 
+    /* Changed padding to add 40px + iOS safe area to the bottom */
+    padding: 15px 15px calc(40px + env(safe-area-inset-bottom)) 15px; 
     box-shadow: var(--shadow);
     position: relative; 
     display: flex; 
@@ -92,3 +94,46 @@ table { width: 100%; border-collapse: collapse; margin-top: 20px; }
 th, td { border: 1px solid #ddd; padding: 10px; text-align: center; }
 th { background-color: var(--pastel-blue); }
 .better-stat { background-color: var(--pastel-green); }
+
+/* --- LANDSCAPE & ROTATION LOGIC --- */
+
+/* Hide the rotate message by default */
+#rotate-message {
+    display: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text-main);
+    margin: 40px 0;
+}
+
+/* 📱 PORTRAIT MODE (Vertical) */
+@media (orientation: portrait) {
+    /* Hide the table and dropdown so they don't get squished */
+    #screen-analysis .data-content { display: none; }
+    
+    /* Show the prompt to rotate */
+    #screen-analysis #rotate-message { display: block; }
+}
+
+/* 📺 LANDSCAPE MODE (Sideways) */
+@media (orientation: landscape) {
+    /* Add padding for the "notch" on iPhones when held sideways */
+    #app-container {
+        padding-left: calc(15px + env(safe-area-inset-left));
+        padding-right: calc(15px + env(safe-area-inset-right));
+    }
+
+    /* Shrink the margins to maximize table space */
+    #screen-analysis h2 { margin-bottom: 5px; font-size: 1.5rem; }
+    .compare-section { margin-bottom: 5px; }
+    
+    /* Expand the table container to fit the landscape height */
+    .table-container {
+        margin-top: 5px;
+        max-height: 60dvh; /* Keeps it inside the screen */
+        overflow-y: auto;  /* Allows scrolling up and down if the list gets long */
+    }
+    
+    /* Make the table stretch perfectly across the wide screen */
+    table { min-width: 100%; } 
+}
