@@ -9,21 +9,35 @@
     --shadow: 0 8px 16px rgba(0,0,0,0.1);
 }
 
-* { box-sizing: border-box; font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; }
+* { box-sizing: border-box; font-family: 'Quicksand', sans-serif; }
 
 body {
     margin: 0; padding: 0; background-color: var(--bg-color);
     display: flex; justify-content: center; color: var(--text-main);
     touch-action: manipulation; /* Prevents double-tap zoom */
+    height: 100dvh; /* CRITICAL: Dynamic viewport height for iOS */
+    overflow: hidden; /* Prevents scrolling entirely */
 }
 
 #app-container {
-    width: 100%; max-width: 600px; min-height: 100vh;
-    background: white; padding: 20px; box-shadow: var(--shadow);
-    position: relative; overflow: hidden;
+    width: 100%; max-width: 600px; 
+    height: 100%; /* Locks to the body height */
+    background: white; padding: 15px; 
+    box-shadow: var(--shadow);
+    position: relative; 
+    display: flex; 
+    flex-direction: column;
 }
 
-.screen { display: none; flex-direction: column; align-items: center; text-align: center; }
+.screen { 
+    display: none; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
+    flex: 1; /* Tells the screen to take up the full container height */
+    justify-content: space-evenly; /* Distributes vertical space perfectly */
+    width: 100%;
+}
 .screen.active { display: flex; }
 .hidden { display: none !important; }
 
@@ -57,21 +71,21 @@ select, input[type="text"] {
 .btn-analysis { background: #eee; width: 100%; }
 
 /* Game Screen */
-.game-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 20px;}
+.game-header { display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 0; }
 .btn-quit { background: #ff6961; color: white; padding: 10px 15px; border-radius: 50%; }
 #timer-display { font-size: 1.5rem; font-weight: bold; color: #ff6961; }
 
-#question-container { font-size: 4rem; margin: 30px 0; min-height: 100px; }
+#question-container { font-size: 3.5rem; margin: 10px 0; min-height: 80px; }
 #emoji-display { letter-spacing: 10px; }
 
 /* Keypad */
-#custom-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; max-width: 300px; margin: auto;}
-#custom-keypad button { background: var(--pastel-blue); font-size: 1.5rem; padding: 20px; }
+#custom-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; width: 100%; max-width: 300px; margin: auto;}
+#custom-keypad button { background: var(--pastel-blue); font-size: 1.3rem; padding: 12px; } /* Smaller padding */
 #custom-keypad .btn-clear { background: var(--pastel-pink); }
 
-#answer-display { font-size: 2.5rem; min-height: 50px; margin: 20px 0; font-weight: bold; color: var(--text-main); }
-#btn-submit { background: var(--pastel-green); width: 100%; max-width: 300px; font-size: 1.5rem; padding: 15px; }
-#feedback-message { font-size: 1.5rem; font-weight: bold; margin-top: 15px; min-height: 30px; }
+#answer-display { font-size: 2.2rem; min-height: 40px; margin: 10px 0; font-weight: bold; color: var(--text-main); }
+#btn-submit { background: var(--pastel-green); width: 100%; max-width: 300px; font-size: 1.5rem; padding: 12px; }
+#feedback-message { font-size: 1.3rem; font-weight: bold; margin-top: 5px; min-height: 30px; }
 
 /* Analysis Table */
 table { width: 100%; border-collapse: collapse; margin-top: 20px; }
